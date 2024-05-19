@@ -34,6 +34,6 @@ class PatientDetailView(View):
             return JsonResponse({'error': 'Permission denied'}, status=403)
 
         # Serialize patient data
-        serialized_patient = PatientSerializer(patient)
-
-        return JsonResponse(serialized_patient)
+        serializer = PatientSerializer(patient)
+        return JsonResponse(serializer.data)
+    
