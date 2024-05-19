@@ -4,7 +4,7 @@
 
 ## Description
 
-A Django project for managing a hospital system using [Permit.io]([htt](https://app.permit.io/) for authorization. The project includes a RESTful API for managing patients, doctors, and appointments. The API is secured using ABAC (Attribute-Based Access Control) and RBAC (Role-Based Access Control) policies. The project also includes a PDP (Policy Decision Point) microservice for evaluating access control policies. 
+A Django project for managing a hospital system using [Permit.io](https://app.permit.io/) for authorization. The project includes a RESTful API for managing patients, doctors, and appointments. The API is secured using ABAC (Attribute-Based Access Control) and RBAC (Role-Based Access Control) policies. The project also includes a PDP (Policy Decision Point) microservice for evaluating access control policies. 
 
 ## Features
 
