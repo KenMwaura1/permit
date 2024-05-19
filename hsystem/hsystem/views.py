@@ -3,7 +3,7 @@ from django.views import View
 from permit import Permit
 from .models import Patient
 from django.conf import settings
-from .serializers import serialize_patient
+from .serializers import PatientSerializer
 
 class PatientDetailView(View):
     def get(self, request, patient_id):
@@ -34,6 +34,6 @@ class PatientDetailView(View):
             return JsonResponse({'error': 'Permission denied'}, status=403)
 
         # Serialize patient data
-        serialized_patient = serialize_patient(patient)
+        serialized_patient = PatientSerializer(patient)
 
         return JsonResponse(serialized_patient)
