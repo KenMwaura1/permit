@@ -45,13 +45,21 @@ docker run -it -p 7766:7000 --env PDP_DEBUG=True --env PDP_API_KEY=<YOUR_API_KEY
 
 ```
 
-
 ## Usage
 
 1. Create a superuser: `python manage.py createsuperuser`
 2. Access the admin panel: `http://localhost:5000/admin/`
 3. Access the API: `http://localhost:5000/api/`
 4. Access the documentation: `http://localhost:5000/docs/` 
+
+## Test the App
+
+Run the following command in a separate terminal to test whether the app is working as expected:
+
+```bash
+curl -X GET http://localhost:5000/patients/1/
+
+```
 
 ## Contributing
 
