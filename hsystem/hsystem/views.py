@@ -53,20 +53,40 @@ class PatientDetailView(View):
         )
 
         # Check ABAC policy for viewing patient records
-        permitted = permit.check("Kenzmwaura1@gmail.com", "retrieve", "task") # default tenant is used
-        if not permitted:
-        	return JsonResponse({"result": f"John Smith is NOT PERMITTED to retrieve patient data!"}, status=403)
-        
-  
-        # Check ReBAC policy for viewing patient records
-        permitted = permit.check("Kenzmwaura1@gmail.com", "retrieve", "task") # default tenant is used
-        if not permitted:
-        	return JsonResponse({
-			"result": f"John Smith is NOT PERMITTED to retrieve patient data!"
-		}, status=403)
+        def check_permission(user, action, resource):
+            # Initialize the Permit client
+            permit = Permit(
+                token=settings.PERMIT_API_KEY,
+                pdp=settings.PERMIT_PDP_URL
+            )
+            # Check ABAC policy for viewing patient records
+            if not permit.check(
+                user=user,
+                action=action,
+                resource=resource
+            ):
+                return JsonResponse({'error': 'Permission denied'}, status=403)
+            
+            # Check ReBAC policy for viewing patient records
+            permitted = permit.check(
+                user=user,
+                action=action,
+                resource=resource,
+                relationships=[('treats', user, resource)]
+            )
+            if not permitted:
+                return JsonResponse({'error': 'Permission denied'}, status=403)
+            return JsonResponse({'message': 'Permission granted'}, status=200, safe=False)
 
+        # Usage:
+        check_permission("kenzmwaura@gmail.com", 'retrieve', "task")
+        
         # Serialize patient data
-        serializer = PatientSerializer(patient)
-        return JsonResponse(serializer.data)
+        if patient:
+            serializer = PatientSerializer(patient)
+            print(serializer.data)
+            return JsonResponse(serializer.data,status=200, safe=False)
+        else:
+            return JsonResponse({'error': 'Patient not found'}, status=404)
     
-	
+    
