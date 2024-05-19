@@ -71,15 +71,14 @@ class PatientDetailView(View):
             permitted = permit.check(
                 user=user,
                 action=action,
-                resource=resource,
-                relationships=[('treats', user, resource)]
+                resource=resource
             )
             if not permitted:
                 return JsonResponse({'error': 'Permission denied'}, status=403)
             return JsonResponse({'message': 'Permission granted'}, status=200, safe=False)
 
         # Usage:
-        check_permission("kenzmwaura@gmail.com", 'retrieve', "task")
+        check_permission("john.doe", 'read', "p1")
         
         # Serialize patient data
         if patient:
