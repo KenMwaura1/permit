@@ -1,11 +1,16 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views import View
 from permit.sync import Permit
 from .models import Patient
 from django.conf import settings
 from .serializers import PatientSerializer
-import json
+from flask import request
 
+# Initialize the Permit client
+permit = Permit(
+    token=settings.PERMIT_API_KEY,
+    pdp=settings.PERMIT_PDP_URL
+)
 class PatientDetailView(View):
     
     # Create a new patient record
@@ -15,11 +20,7 @@ class PatientDetailView(View):
         if serializer.is_valid():
 			# Save the patient to the database
             patient = serializer.save()
-			# Initialize the Permit client
-            permit = Permit(
-				token=settings.PERMIT_API_KEY,
-				pdp=settings.PERMIT_PDP_URL
-			)
+			
 			# Check ABAC policy for creating patient records
             if not permit.check(
 				subject=request.user,
@@ -45,20 +46,8 @@ class PatientDetailView(View):
     def get(self, request, patient_id):
         # Retrieve patient information from the database
         patient = Patient.objects.get(pk=patient_id)
-
-        # Initialize the Permit client
-        permit = Permit(
-            token=settings.PERMIT_API_KEY,
-            pdp=settings.PERMIT_PDP_URL
-        )
-
         # Check ABAC policy for viewing patient records
         def check_permission(user, action, resource):
-            # Initialize the Permit client
-            permit = Permit(
-                token=settings.PERMIT_API_KEY,
-                pdp=settings.PERMIT_PDP_URL
-            )
             # Check ABAC policy for viewing patient records
             if not permit.check(
                 user=user,
@@ -75,17 +64,11 @@ class PatientDetailView(View):
             )
             if not permitted:
                 return JsonResponse({'error': 'Permission denied'}, status=403)
-            return JsonResponse({'message': 'Permission granted'}, status=200, safe=False)
-
-        # Usage:
-        check_permission("john.doe", 'read', "p1")
+            return JsonResponse({'message': 'Permission granted'}, status=200, safe=False
         
-        # Serialize patient data
-        if patient:
+        if check_permission(request.user, 'read', patient):
+            # Serialize patient data
             serializer = PatientSerializer(patient)
-            print(serializer.data)
-            return JsonResponse(serializer.data,status=200, safe=False)
-        else:
-            return JsonResponse({'error': 'Patient not found'}, status=404)
+            return JsonResponse(serializer.data, status=200)    
     
     
