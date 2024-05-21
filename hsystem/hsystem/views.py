@@ -71,6 +71,5 @@ class PatientDetailView(View):
             serializer = PatientSerializer(patient)
             return JsonResponse(serializer.data, status=200)    
         else:
-            print(check_permission("john.doe", 'read', 'p1'))
             return JsonResponse({'error': 'Permission denied'}, status=403)
     
