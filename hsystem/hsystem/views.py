@@ -4,7 +4,7 @@ from permit.sync import Permit
 from .models import Patient
 from django.conf import settings
 from .serializers import PatientSerializer
-from flask import request
+
 
 # Initialize the Permit client
 permit = Permit(
@@ -64,11 +64,13 @@ class PatientDetailView(View):
             )
             if not permitted:
                 return JsonResponse({'error': 'Permission denied'}, status=403)
-            return JsonResponse({'message': 'Permission granted'}, status=200, safe=False
+            return JsonResponse({'message': 'Permission granted'}, status=200, safe=False)
         
-        if check_permission(request.user, 'read', patient):
+        if check_permission("john.doe", 'read', 'p1').status_code==200:
             # Serialize patient data
             serializer = PatientSerializer(patient)
             return JsonResponse(serializer.data, status=200)    
-    
+        else:
+            print(check_permission("john.doe", 'read', 'p1'))
+            return JsonResponse({'error': 'Permission denied'}, status=403)
     
