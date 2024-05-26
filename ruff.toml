@@ -1,4 +1,3 @@
-[tool.ruff]
 
 # The list of paths to lint.
 paths = ["hsystem"]
