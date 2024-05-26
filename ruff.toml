@@ -9,10 +9,15 @@ exclude = ["hsystem/ignore.py"]
 # The list of rules to enable.
 rules = ["no-implicit-optional", "no-implicit-any"]
 
-# The list of rules to disable.
-disabled-rules = ["no-implicit-any"]
+# The list of rules to enable for specific paths.
+rules-for-paths = {
+	"hsystem/ignore.py": ["no-implicit-any"]
+}
 
+# The list of rules to disable.
+disabled-rules = ["no-implicit-optional"]
 
 # The list of rules to disable for specific paths.
-[tool.ruff.disabled-rules]
-hsystem/ignore.py" = ["no-implicit-optional"]
+disabled-rules-for-paths = {
+	"hsystem/ignore.py": ["no-implicit-optional"]
+}
