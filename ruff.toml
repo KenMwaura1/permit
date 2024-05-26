@@ -15,5 +15,3 @@ disabled-rules = ["no-implicit-any"]
 # The list of rules to enable for specific paths.
 "src/ignore.py" = ["no-implicit-any"]
 
-# The list of rules to disable for specific paths.
-"src/ignore.py" = ["no-implicit-optional"]
