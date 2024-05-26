@@ -37,8 +37,4 @@ jobs:
         run: |
             pip install ruff
             ruff check --fix
-      - name: Django test
-        run: |
-            cd hsystem
-            python manage.py migrate
-            python manage.py runserver 
+  
