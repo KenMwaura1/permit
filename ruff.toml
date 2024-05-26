@@ -1,0 +1,21 @@
+[tool.ruff]
+
+# The list of paths to lint.
+paths = ["hsystem"]
+
+# The list of paths to exclude from linting.
+exclude = ["hsystem/ignore.py"]
+
+# The list of rules to enable.
+rules = ["no-implicit-optional", "no-implicit-any"]
+
+# The list of rules to disable.
+disabled-rules = ["no-implicit-any"]
+
+# The list of rules to enable for specific paths.
+[tool.ruff.rules]
+"src/ignore.py" = ["no-implicit-any"]
+
+# The list of rules to disable for specific paths.
+[tool.ruff.disabled-rules]
+hsystem/ignore.py" = ["no-implicit-optional"]
