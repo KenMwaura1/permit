@@ -12,9 +12,6 @@ rules = ["no-implicit-optional", "no-implicit-any"]
 # The list of rules to disable.
 disabled-rules = ["no-implicit-any"]
 
-# The list of rules to enable for specific paths.
-[tool.ruff.rules]
-"src/ignore.py" = ["no-implicit-any"]
 
 # The list of rules to disable for specific paths.
 [tool.ruff.disabled-rules]
